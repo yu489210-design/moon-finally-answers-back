@@ -12,6 +12,11 @@ def main() -> None:
     out = Path("/output/entry.txt")
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(ENTRY, encoding="utf-8")
+    # Verify the round-trip: what was written is exactly the entry, one line.
+    written = out.read_text(encoding="utf-8")
+    assert written == ENTRY, "entry.txt round-trip mismatch"
+    assert 1 <= len(written) <= 240, "entry must be 1-240 characters"
+    assert "\n" not in written, "entry must be one line"
 
 if __name__ == "__main__":
     main()
